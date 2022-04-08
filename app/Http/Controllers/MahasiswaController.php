@@ -88,4 +88,13 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.index')
             -> with('success', 'Mahasiswa Berhasil Dihapus');
     }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->search;
+        $mahasiswa = Mahasiswa::where('Nama', 'like', "%" . $keyword . "%")->paginate(6);
+        return view('mahasiswa.index', compact('mahasiswa'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+           
+    }
 };
